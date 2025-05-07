@@ -12,6 +12,6 @@ export class EmpresaController {
           @Query('page') page: number = 1,
           @Query('limit') limit: number = 10,
      ): Promise<any> {
-          return this.empresaService.findAll(page, limit);
+          return this.empresaService.findAll(Number(page), Number(limit));
      }
 }

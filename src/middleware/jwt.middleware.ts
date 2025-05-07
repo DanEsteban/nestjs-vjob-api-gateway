@@ -7,7 +7,7 @@ export class JwtMiddleware implements NestMiddleware {
      use(req: any, res: any, next: () => void) {
 
           const token = req.headers['authorization']?.split(' ')[1];
-          
+          //console.log(token)
           if (!token) {
                return res.status(401).send('Token no proporcionado');
           }

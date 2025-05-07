@@ -34,7 +34,7 @@ export class DominioMiddleware implements NestMiddleware {
       throw new UnauthorizedException(`El dominio "${host}" no está registrado`);
     } 
 
-    console.log(req.headers.authorization)
+    //console.log(req.headers.authorization)
     //Verificar si la empresa está activa
     if (!empresa.estado) {
       throw new UnauthorizedException(`La empresa asociada al dominio "${host}" no está activa`);

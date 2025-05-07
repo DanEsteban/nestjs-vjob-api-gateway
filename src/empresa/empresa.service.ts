@@ -7,9 +7,12 @@ import { handleAxiosError } from "../helpers/axios-error.helper";
 @Injectable()
 export class EmpresaService {
 
-     private readonly baseUrl = process.env.BASE_URL;
+     private readonly baseUrl = process.env.URL_USUARIOS || 'http://localhost:3000';
 
-     async findAll(page: number = 1, limit: number = 10): Promise<any> {
+     
+     
+     async findAll(page: number = 1, limit: number = 10): Promise<{ data: any[]; total: number }> {
+          console.log(this.baseUrl)
           try {
                const response = await axios.get(`${this.baseUrl}/empresa`, {
                     params: { page, limit },
@@ -17,8 +20,6 @@ export class EmpresaService {
                          'Content-Type': 'application/json',
                     },
                });
-               console.log(response.data)
-
                return response.data;
           } catch (error) {
                handleAxiosError(error);

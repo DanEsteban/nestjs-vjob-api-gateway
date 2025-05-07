@@ -8,6 +8,8 @@ import { UsuariosModule } from './usuarios/usuarios.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from './config/typeorm.config';
+import { JwtMiddleware } from './middleware/jwt.middleware';
+import { EmpresaModule } from './empresa/empresa.module';
 
 @Module({
   imports: [
@@ -23,6 +25,7 @@ import { typeOrmConfig } from './config/typeorm.config';
       max: 100, // Máximo número de elementos en caché
     }),
     MiddlewareModule,
+    EmpresaModule,
     UsuariosModule,
   ],
   controllers: [AppController],
@@ -30,6 +33,10 @@ import { typeOrmConfig } from './config/typeorm.config';
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(DominioMiddleware).forRoutes('*');
+    consumer
+      .apply(DominioMiddleware) // Aplica el DominioMiddleware
+      .forRoutes('autenticacion') // Aplica a todas las rutas
+      .apply(JwtMiddleware) // Aplica el JwtMiddleware
+      .forRoutes('empresa'); // También aplica a todas las rutas
   }
 }

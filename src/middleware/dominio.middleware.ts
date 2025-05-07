@@ -5,6 +5,7 @@ import { Request, Response, NextFunction } from 'express';
 import { Empresa } from '../empresa/entities/empresa.entity';
 import { Repository } from 'typeorm';
 import * as jwt from 'jsonwebtoken';
+import { ConfigService } from '@nestjs/config';
 
 
 @Injectable()
@@ -15,6 +16,8 @@ export class DominioMiddleware implements NestMiddleware {
     
     @Inject(CACHE_MANAGER)
     private readonly cacheManager: Cache,
+
+    private readonly configService: ConfigService,
   ) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
@@ -69,7 +72,7 @@ export class DominioMiddleware implements NestMiddleware {
     req['empresa'] = {
       id: empresa.id,
       dominio: empresa.dominio,
-      urlUsuarios: process.env.URL_USUARIOS,
+      urlUsuarios: this.configService.get<string>('URL_USUARIOS'),
     };
     next();
   }

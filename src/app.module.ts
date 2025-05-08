@@ -1,5 +1,5 @@
 import { Module, MiddlewareConsumer } from '@nestjs/common';
-import { CacheModule } from '@nestjs/cache-manager'; // Nueva importación
+import { CacheModule } from '@nestjs/cache-manager';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MiddlewareModule } from './middleware/middleware.module';
@@ -35,8 +35,11 @@ export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(DominioMiddleware) // Aplica el DominioMiddleware
-      .forRoutes('autenticacion') // Aplica a todas las rutas
+      .forRoutes('*') // Aplica a todas las rutas
       .apply(JwtMiddleware) // Aplica el JwtMiddleware
-      .forRoutes('empresa'); // También aplica a todas las rutas
-  }
+      .exclude('/autenticacion/iniciar-sesion') // Excluye la ruta de logincluye la ruta de login
+      .forRoutes('*'); // Aplica a todas las demás rutas   .forRoutes('*'); // Aplica a todas las demás rutas
+  } 
 }
+
+

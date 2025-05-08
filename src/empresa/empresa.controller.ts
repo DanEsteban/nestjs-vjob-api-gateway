@@ -1,5 +1,6 @@
-import { Controller, Get, Query, Req } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { EmpresaService } from "./empresa.service";
+import { FileInterceptor } from "@nestjs/platform-express";
 
 @Controller('empresa')
 export class EmpresaController {
@@ -14,4 +15,30 @@ export class EmpresaController {
      ): Promise<any> {
           return this.empresaService.findAll(Number(page), Number(limit));
      }
+
+     @Post()
+     @UseInterceptors(FileInterceptor('logo'))
+     createEmpresa(
+          @Body() data: any,
+          @UploadedFile() file: Express.Multer.File,
+     ): Promise<any> {
+          return this.empresaService.create(data, file);
+     }
+
+     @Put(':id')
+     @UseInterceptors(FileInterceptor('logo'))
+     async updateEmpresa(
+          @Param('id') id: string,
+          @Body() body: any,
+          @UploadedFile() file: Express.Multer.File,
+     ) {
+
+          return this.empresaService.update(id, body, file);
+     }
+
+     @Delete(':id')
+     deleteEmpresa(@Param('id') id: string): Promise < any > {
+          return this.empresaService.delete(id);
+     }
+
 }

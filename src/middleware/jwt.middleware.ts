@@ -25,7 +25,7 @@ export class JwtMiddleware implements NestMiddleware {
                }
 
                // Verificar el token y su expiración
-               const decoded = jwt.verify(token, secretKey); // Lanza un error si el token ha expirado
+               const decoded = jwt.verify(token, secretKey); 
                req.user = decoded; // Guarda la información del usuario en la solicitud
                next(); // Continúa con la siguiente función middleware
           } catch (error) {

@@ -25,8 +25,6 @@ export class DominioMiddleware implements NestMiddleware {
     const host = req.headers.host || '';
     const dominio = host.split(':')[0];
 
-    //console.log(req.headers)
-
     if (!dominio) {
       throw new UnauthorizedException('No se pudo determinar el dominio de la solicitud');
     }

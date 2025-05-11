@@ -10,6 +10,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from './config/typeorm.config';
 import { JwtMiddleware } from './middleware/jwt.middleware';
 import { EmpresaModule } from './empresa/empresa.module';
+import { PermisosMiddleware } from './middleware/permisos.middleware';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { EmpresaModule } from './empresa/empresa.module';
     }),
     CacheModule.register({
       isGlobal: true,
-      ttl: 300, // Tiempo de vida en segundos (5 minutos)
+      ttl: 864000, // 24 horas en segundos
       max: 100, // Máximo número de elementos en caché
     }),
     MiddlewareModule,
@@ -38,7 +39,10 @@ export class AppModule {
       .forRoutes('*') // Aplica a todas las rutas
       .apply(JwtMiddleware) // Aplica el JwtMiddleware
       .exclude('/autenticacion/iniciar-sesion') // Excluye la ruta de logincluye la ruta de login
-      .forRoutes('*'); // Aplica a todas las demás rutas   .forRoutes('*'); // Aplica a todas las demás rutas
+      .forRoutes('*') // Aplica a todas las demás rutas   .forRoutes('*'); // Aplica a todas las demás rutas
+      .apply(PermisosMiddleware)
+      .exclude('/autenticacion/iniciar-sesion')
+      .forRoutes('*'); 
   } 
 }
 

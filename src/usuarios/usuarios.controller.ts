@@ -23,28 +23,30 @@ export class UsuariosController {
           if (!empresa) {
                throw new UnauthorizedException('No se pudo determinar la empresa asociada a la solicitud');
           }
-
-          console.log(empresa)
+          
           const payload = {
                ...credentials,
                empresa_id: empresa.id,
           };
           const respuesta = await this.usuariosService.login(payload, empresa.urlUsuarios);
+          const cache = await this.cacheManager.get('id_user');
+          console.log('usuarios controller:', cache)
           // const token = respuesta.token;
 
           // if (token) {
           //      try {
           //           // Decodificar el token JWT
           //           const secretKey = 'jwt_super_secreto';
-          //           const decoded = jwt.verify(token, secretKey); // Verificar y decodificar el token
-          //           const cache = await this.cacheManager.get(`${decoded.sub}`);
+          //           const decoded = jwt.verify(token, secretKey) as jwt.JwtPayload; // Verificar y decodificar el token
+                    
+          //           const cache = await this.cacheManager.get(`${decoded['id']}`);
+          //           //console.log(decoded, cache)
+          //           // if (!cache) {
+          //           //      throw new UnauthorizedException('Token no encontrado en caché o expirado');
+          //           // }
 
-          //           if (!cache) {
-          //                throw new UnauthorizedException('Token no encontrado en caché o expirado');
-          //           }
-
-          //           //console.log('Token decodificado:', decoded);
-          //           //console.log('Datos en caché:', cache);
+          //           // //console.log('Token decodificado:', decoded);
+          //           // console.log('Datos en caché:', cache);
                     
           //      } catch (error) {
           //           console.error('Error al decodificar el token:', error.message);

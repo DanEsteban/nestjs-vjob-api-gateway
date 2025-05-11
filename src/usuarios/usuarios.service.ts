@@ -25,11 +25,11 @@ export class UsuariosService {
                          },
                     },
                );
+               
                const rolPermisos = response.data.usuario.rol_permisos;
-
-               await this.cacheManager.set(response.data.usuario.id, rolPermisos); // Guardar por 5 minutos
-               //console.log(rolPermisos)
-
+               const key = String(response.data.usuario.id);
+               await this.cacheManager.set(key, rolPermisos); 
+               
                return response.data;
           } catch (error) {
                handleAxiosError(error);

@@ -1,0 +1,26 @@
+[
+     {
+          "nombre": "Listar empresas",
+          "slug": "ver.empresa",
+          "metodo": "GET",
+          "url": "/empresa"
+     },
+     {
+          "nombre": "Crear empresa",
+          "slug": "crear.empresa",
+          "metodo": "POST",
+          "url": "/empresa"
+     },
+     {
+          "nombre": "Actualizar empresa",
+          "slug": "editar.empresa",
+          "metodo": "PUT",
+          "url": "/empresa/:id"
+     },
+     {
+          "nombre": "Eliminar empresa",
+          "slug": "eliminar.empresa",
+          "metodo": "DELETE",
+          "url": "/empresa/:id"
+     }
+]

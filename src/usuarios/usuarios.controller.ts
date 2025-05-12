@@ -29,8 +29,7 @@ export class UsuariosController {
                empresa_id: empresa.id,
           };
           const respuesta = await this.usuariosService.login(payload, empresa.urlUsuarios);
-          const cache = await this.cacheManager.get('id_user');
-          console.log('usuarios controller:', cache)
+
           // const token = respuesta.token;
 
           // if (token) {

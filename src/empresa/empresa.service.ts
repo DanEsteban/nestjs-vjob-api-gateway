@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import axios from "axios";
 import * as fs from 'fs';
 import FormData from 'form-data';
@@ -10,7 +10,9 @@ export class EmpresaService {
 
      private readonly baseUrl: string;
 
-     constructor(private readonly configService: ConfigService) {
+     constructor(
+          private readonly configService: ConfigService,          
+     ) {
           this.baseUrl = this.configService.get<string>('URL_USUARIOS');
      }
 
@@ -32,6 +34,7 @@ export class EmpresaService {
           data: any,
           file?: Express.Multer.File,
      ): Promise<any> {
+
           const formData = new FormData();
 
           for (const key in data) {
@@ -77,13 +80,16 @@ export class EmpresaService {
                ...formData.getHeaders(),
           };
 
-          const response = await axios.put(
-               `${this.baseUrl}/empresa/${id}`,
-               formData,
-               { headers },
-          );
-
-          return response.data;
+          try {
+               const response = await axios.put(
+                    `${this.baseUrl}/empresa/${id}`,
+                    formData,
+                    { headers },
+               );
+               return response.data;
+          } catch (error) {
+               handleAxiosError(error);
+          }
      }
 
      async delete(id: string): Promise<any> {

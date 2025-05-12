@@ -22,8 +22,7 @@ import { PermisosMiddleware } from './middleware/permisos.middleware';
     }),
     CacheModule.register({
       isGlobal: true,
-      ttl: 864000, // 24 horas en segundos
-      max: 100, // Máximo número de elementos en caché
+      ttl:  86400, // 1 día en segundos
     }),
     MiddlewareModule,
     EmpresaModule,
@@ -37,12 +36,12 @@ export class AppModule {
     consumer
       .apply(DominioMiddleware) // Aplica el DominioMiddleware
       .forRoutes('*') // Aplica a todas las rutas
-      .apply(JwtMiddleware) // Aplica el JwtMiddleware
-      .exclude('/autenticacion/iniciar-sesion') // Excluye la ruta de logincluye la ruta de login
-      .forRoutes('*') // Aplica a todas las demás rutas   .forRoutes('*'); // Aplica a todas las demás rutas
-      .apply(PermisosMiddleware)
-      .exclude('/autenticacion/iniciar-sesion')
-      .forRoutes('*'); 
+      .apply(JwtMiddleware, PermisosMiddleware) // Aplica el JwtMiddleware
+      .exclude('/autenticacion/iniciar-sesion') // Excluye la ruta de login
+      .forRoutes('*') 
+      // .apply(PermisosMiddleware)
+      // .exclude('/autenticacion/iniciar-sesion')
+      // .forRoutes('*'); 
   } 
 }
 

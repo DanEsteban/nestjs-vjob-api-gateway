@@ -18,7 +18,7 @@ export class EmpresaController {
      ): Promise<any> {
 
           const cache = await this.cacheManager.get('id_user');
-          console.log(cache)
+          //console.log(cache)
           return this.empresaService.findAll(Number(page), Number(limit));
      }
 

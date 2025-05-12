@@ -17,34 +17,34 @@ export class PermisosMiddleware implements NestMiddleware {
 
           const nombreRuta = this.matchRutaJson(urlActual, metodo, rutas);
 
-          console.log(nombreRuta, 'nombre ruta')
-
           if (!nombreRuta) {
                console.warn(`⚠️ Ruta no reconocida: ${metodo} ${urlActual}`);
                return res.status(404).send('Ruta no encontrada en definición');
           }
 
           const permisosEnCache = await this.cacheManager.get<{ permiso_nombre: string }[]>(`${usuario.id}`);
-
-          console.log('permisos en cache', permisosEnCache)
           
+          console.log('Permisos en caché:', permisosEnCache);
+          console.log( 'Nombre de la ruta:', nombreRuta);
+
           if (!permisosEnCache) {
                throw new UnauthorizedException('Sesion expirada');
           }
 
           const tienePermiso = permisosEnCache.some(
-               (permiso: any) => permiso.permiso_nombre === nombreRuta
+               (permiso: any) => permiso.permiso_slug === nombreRuta
           );
 
           if (!tienePermiso) {
                return res.status(403).send('Acceso denegado: Permiso insuficiente');
+          }else{
+               console.log('Permiso concedido');
           }
 
           next();
      }
 
      private matchRutaJson(urlActual: string, metodoActual: string, rutasJson: any[]): string | null {
-          console.log(urlActual, metodoActual, rutasJson)
           for (const ruta of rutasJson) {
                if (ruta.metodo !== metodoActual.toUpperCase()) continue;
 

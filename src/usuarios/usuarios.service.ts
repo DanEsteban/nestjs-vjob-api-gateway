@@ -1,4 +1,4 @@
-import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager'; // Importar Cache correctamente
+import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager'; // Importar Cache correctamente
 import { Injectable, HttpException, Inject } from '@nestjs/common';
 import axios from 'axios';
 import { handleAxiosError } from '../helpers/axios-error.helper';
@@ -29,7 +29,7 @@ export class UsuariosService {
                const rolPermisos = response.data.usuario.rol_permisos;
                const key = String(response.data.usuario.id);
                await this.cacheManager.set(key, rolPermisos); 
-               
+
                return response.data;
           } catch (error) {
                handleAxiosError(error);

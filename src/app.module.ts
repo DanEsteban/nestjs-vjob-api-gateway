@@ -11,6 +11,7 @@ import { typeOrmConfig } from './config/typeorm.config';
 import { JwtMiddleware } from './middleware/jwt.middleware';
 import { EmpresaModule } from './empresa/empresa.module';
 import { PermisosMiddleware } from './middleware/permisos.middleware';
+import { EmpresaModulosModule } from './empresa-modulos/empresa-modulos.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { PermisosMiddleware } from './middleware/permisos.middleware';
     MiddlewareModule,
     EmpresaModule,
     UsuariosModule,
+    EmpresaModulosModule,
   ],
   controllers: [AppController],
   providers: [AppService],

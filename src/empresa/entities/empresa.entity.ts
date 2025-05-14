@@ -1,3 +1,4 @@
+import { EmpresaModulo } from "../../empresa-modulos/entities/empresa-modulo.entity";
 import { Rol } from "../../roles/entities/rol.entity";
 import { Usuario } from "../../usuarios/entities/usuario.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
@@ -36,5 +37,9 @@ export class Empresa {
 
      @OneToMany(() => Usuario, usuario => usuario.empresa)
      usuarios: Usuario[];
+
+     @OneToMany(() => EmpresaModulo, empresaModulo => empresaModulo.empresa, { cascade: true })
+     empresaModulo: EmpresaModulo[]; // Cambiado de empresa_modulos a modulos
 }
+
 

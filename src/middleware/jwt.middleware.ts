@@ -17,7 +17,7 @@ export class JwtMiddleware implements NestMiddleware {
           if (!token) {
                return res.status(401).send('Token no proporcionado');
           }
-
+          
           try {
                const secretKey = this.configService.get<string>('CLAVE_JWT');
                if (!secretKey) {

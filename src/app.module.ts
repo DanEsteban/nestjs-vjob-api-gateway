@@ -22,7 +22,7 @@ import { PermisosMiddleware } from './middleware/permisos.middleware';
     }),
     CacheModule.register({
       isGlobal: true,
-      ttl:  86400, // 1 día en segundos
+      ttl:  24*60*60*1000, // 1 día en segundos
     }),
     MiddlewareModule,
     EmpresaModule,

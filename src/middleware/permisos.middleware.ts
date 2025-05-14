@@ -23,10 +23,7 @@ export class PermisosMiddleware implements NestMiddleware {
           }
 
           const permisosEnCache = await this.cacheManager.get<{ permiso_nombre: string }[]>(`${usuario.id}`);
-          
-          console.log('Permisos en caché:', permisosEnCache);
-          console.log( 'Nombre de la ruta:', nombreRuta);
-
+          console.log(permisosEnCache)
           if (!permisosEnCache) {
                throw new UnauthorizedException('Sesion expirada');
           }

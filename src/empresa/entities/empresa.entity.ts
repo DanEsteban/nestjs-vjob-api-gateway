@@ -1,8 +1,8 @@
 import { EmpresaModulo } from "../../empresa-modulos/entities/empresa-modulo.entity";
 import { Rol } from "../../roles/entities/rol.entity";
 import { Usuario } from "../../usuarios/entities/usuario.entity";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
+@Unique(['dominio'])
 @Entity()
 export class Empresa {
      @PrimaryGeneratedColumn()

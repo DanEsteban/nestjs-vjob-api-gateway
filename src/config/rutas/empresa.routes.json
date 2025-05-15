@@ -1,25 +1,25 @@
 [
      {
           "nombre": "Listar empresas",
-          "slug": "ver.empresa",
+          "slug": "ver.empresas",
           "metodo": "GET",
           "url": "/empresa"
      },
      {
           "nombre": "Crear empresa",
-          "slug": "crear.empresa",
+          "slug": "crear.empresas",
           "metodo": "POST",
           "url": "/empresa"
      },
      {
           "nombre": "Actualizar empresa",
-          "slug": "editar.empresa",
+          "slug": "editar.empresas",
           "metodo": "PUT",
           "url": "/empresa/:id"
      },
      {
           "nombre": "Eliminar empresa",
-          "slug": "eliminar.empresa",
+          "slug": "eliminar.empresas",
           "metodo": "DELETE",
           "url": "/empresa/:id"
      }

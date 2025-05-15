@@ -1,14 +1,11 @@
 import { Body, Controller, Delete, Get, Inject, Param, Post, Put, Query, Req, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { EmpresaService } from "./empresa.service";
 import { FileInterceptor } from "@nestjs/platform-express";
-import { CACHE_MANAGER, Cache} from "@nestjs/cache-manager";
 
 @Controller('empresa')
 export class EmpresaController {
      constructor(
           private readonly empresaService: EmpresaService,
-          @Inject(CACHE_MANAGER)
-          private readonly cacheManager: Cache,
      ) { }
 
      @Get()
@@ -16,9 +13,6 @@ export class EmpresaController {
           @Query('page') page: number = 1,
           @Query('limit') limit: number = 10,
      ): Promise<any> {
-
-          const cache = await this.cacheManager.get('id_user');
-          //console.log(cache)
           return this.empresaService.findAll(Number(page), Number(limit));
      }
 

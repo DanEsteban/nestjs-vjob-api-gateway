@@ -16,14 +16,12 @@ export class PermisosMiddleware implements NestMiddleware {
           const urlActual = req.baseUrl; // ej: /empresa/2
 
           const nombreRuta = this.matchRutaJson(urlActual, metodo, rutas);
-
           if (!nombreRuta) {
                console.warn(`⚠️ Ruta no reconocida: ${metodo} ${urlActual}`);
                return res.status(404).send('Ruta no encontrada en definición');
           }
 
           const permisosEnCache = await this.cacheManager.get<{ permiso_nombre: string }[]>(`${usuario.id}`);
-          console.log(permisosEnCache)
           if (!permisosEnCache) {
                throw new UnauthorizedException('Sesion expirada');
           }

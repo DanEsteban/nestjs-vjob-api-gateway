@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Inject, Param, Post, Put, Query, Req, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Inject, Param, ParseIntPipe, Post, Put, Query, Req, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { EmpresaService } from "./empresa.service";
 import { FileInterceptor } from "@nestjs/platform-express";
 
@@ -28,7 +28,7 @@ export class EmpresaController {
      @Put(':id')
      @UseInterceptors(FileInterceptor('logo'))
      async updateEmpresa(
-          @Param('id') id: string,
+          @Param('id', ParseIntPipe) id: number,
           @Body() body: any,
           @UploadedFile() file: Express.Multer.File,
      ) {
@@ -37,7 +37,7 @@ export class EmpresaController {
      }
 
      @Delete(':id')
-     deleteEmpresa(@Param('id') id: string): Promise<any> {
+     deleteEmpresa(@Param('id', ParseIntPipe) id: number): Promise<any> {
           return this.empresaService.delete(id);
      }
 

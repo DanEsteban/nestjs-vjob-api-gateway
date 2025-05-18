@@ -35,6 +35,4 @@ export class UsuariosService {
                handleAxiosError(error);
           }
      }
-
-     
 }

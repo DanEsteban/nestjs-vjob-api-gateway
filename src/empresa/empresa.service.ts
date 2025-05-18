@@ -5,6 +5,7 @@ import FormData from 'form-data';
 import { handleAxiosError } from "../helpers/axios-error.helper";
 import { ConfigService } from "@nestjs/config";
 
+
 @Injectable()
 export class EmpresaService {
 
@@ -59,7 +60,7 @@ export class EmpresaService {
      }
 
      async update(
-          id: string,
+          id: number,
           data: any,
           file?: Express.Multer.File,
      ): Promise<any> {
@@ -92,7 +93,7 @@ export class EmpresaService {
           }
      }
 
-     async delete(id: string): Promise<any> {
+     async delete(id: number): Promise<any> {
           try {
                const response = await axios.delete(`${this.baseUrl}/empresa/${id}`, {
                     headers: {

@@ -14,10 +14,11 @@ export class RolesService {
           this.baseUrl = this.configService.get<string>('URL_USUARIOS'); // apunta al microservicio
      }
 
-     async findAll(empresaId: number): Promise<any> {
+     async findAll(empresaId: number, page: number = 1, limit: number = 10): Promise<any> {
           try {
+               const offset = (page - 1) * limit;
                const response = await axios.get(`${this.baseUrl}/roles`, {
-                    params: { empresa_id: empresaId },
+                    params: { empresa_id: empresaId, offset, limit },
                     headers: {
                          'Content-Type': 'application/json',
                     },
@@ -27,15 +28,6 @@ export class RolesService {
                handleAxiosError(error);
           }
      }
-
-     // async findOne(id: number): Promise<any> {
-     //      try {
-     //           const response = await axios.get(`${this.baseUrl}/roles/${id}`);
-     //           return response.data;
-     //      } catch (error) {
-     //           handleAxiosError(error);
-     //      }
-     // }
 
      async create(data: any): Promise<any> {
           try {
@@ -55,19 +47,13 @@ export class RolesService {
           }
      }
 
-     async desactivar(id: number): Promise<any> {
+     async desactivar(id: number, empresa_id: number): Promise<any> {
           try {
-               const response = await axios.delete(`${this.baseUrl}/roles/${id}`);
-               return response.data;
-          } catch (error) {
-               handleAxiosError(error);
-          }
-     }
-
-     async asignarPermisos(id: number, permiso_ids: number[]): Promise<any> {
-          try {
-               const response = await axios.put(`${this.baseUrl}/roles/${id}/permisos`, {
-                    permiso_ids,
+               const response = await axios.delete(`${this.baseUrl}/roles/${id}`, {
+                    data: { empresa_id },
+                    headers: {
+                         'Content-Type': 'application/json',
+                    },
                });
                return response.data;
           } catch (error) {
@@ -75,14 +61,4 @@ export class RolesService {
           }
      }
 
-     async removerPermisos(id: number, permiso_ids: number[]): Promise<any> {
-          try {
-               const response = await axios.delete(`${this.baseUrl}/roles/${id}/permisos`, {
-                    data: { permiso_ids }, // Axios permite enviar `data` en DELETE
-               });
-               return response.data;
-          } catch (error) {
-               handleAxiosError(error);
-          }
-     }
 }

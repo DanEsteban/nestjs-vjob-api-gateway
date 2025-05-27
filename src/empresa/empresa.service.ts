@@ -37,11 +37,11 @@ export class EmpresaService {
      ): Promise<any> {
 
           const formData = new FormData();
-
+          
           for (const key in data) {
                formData.append(key, data[key]);
           }
-
+     
           if (file && fs.existsSync(file.path)) {
                const fileStream = fs.createReadStream(file.path); // Crear un ReadStream
                formData.append('logo', fileStream, file.originalname); // Agregar el archivo al FormData

@@ -22,11 +22,14 @@ export class Rol {
      @Column()
      estado: boolean;
 
+     @Column({ default: false })
+     eliminado: boolean;
+
      @ManyToOne(() => Empresa, empresa => empresa.roles, { eager: true })
      @JoinColumn({ name: 'empresa_id' })
-     empresa:Empresa;
+     empresa: Empresa;
 
-     @OneToMany(() => RolPermiso, (rp ) => rp.rol, { cascade: true })
+     @OneToMany(() => RolPermiso, (rp) => rp.rol, { cascade: true })
      rolPermisos: RolPermiso[];
 
      @OneToMany(() => Usuario, usuario => usuario.rol)

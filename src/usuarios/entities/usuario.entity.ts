@@ -22,6 +22,12 @@ export class Usuario {
      @Column()
      password: string;
 
+     @Column({ default: true })
+     estado: boolean;
+
+     @Column({ default: false })
+     eliminado: boolean;
+
      @ManyToOne(() => Empresa, (empresa) => empresa.usuarios)
      @JoinColumn({ name: 'empresa_id' })
      empresa: Empresa;

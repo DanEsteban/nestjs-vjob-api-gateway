@@ -1,32 +1,40 @@
-import { Body, Controller, Get, Inject, Post, Req, UnauthorizedException } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Inject, Param, ParseIntPipe, Patch, Post, Query, Req, UnauthorizedException } from "@nestjs/common";
 import { UsuariosService } from "./usuarios.service";
 
 
-@Controller('autenticacion')
+@Controller('usuarios')
 export class UsuariosController {
 
      constructor(
           private readonly usuariosService: UsuariosService,
      ) { }
 
-     @Post('iniciar-sesion')
-     async login(
-          @Body() credentials: { usuario: string; password: string },
-          @Req() req: Request
+     @Get()
+     findAll(
+          @Req() req: Request,
+          @Query('page') page: number = 1,
+          @Query('limit') limit: number = 10,
+          @Query('search') search?: string,
      ) {
-
           const empresa = req['empresa'];
-          if (!empresa) {
-               throw new UnauthorizedException('No se pudo determinar la empresa asociada a la solicitud');
-          }
-          const payload = {
-               ...credentials,
-               empresa_id: empresa.id,
-          };
-          const respuesta = await this.usuariosService.login(payload, empresa.urlUsuarios);
-
-          return respuesta;
+          return this.usuariosService.findAll(empresa.id, Number(page), Number(limit), search);
      }
 
-     
+     @Post()
+     create(@Req() req: Request, @Body() body: any) {
+          const empresa = req['empresa'];
+          return this.usuariosService.create({ ...body, empresa_id: empresa.id });
+     }
+
+     @Patch(':id')
+     update(@Req() req: Request, @Param('id', ParseIntPipe) id: number, @Body() body: any) {
+          const empresa = req['empresa'];
+          return this.usuariosService.update(id, { ...body, empresa_id: empresa.id });
+     }
+
+     @Delete(':id')
+     delete(@Req() req: Request, @Param('id', ParseIntPipe) id: number) {
+          const empresa = req['empresa'];
+          return this.usuariosService.delete(id, empresa.id);
+     }
 }

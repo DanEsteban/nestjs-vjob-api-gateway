@@ -1,38 +1,69 @@
-import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager'; // Importar Cache correctamente
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { handleAxiosError } from '../helpers/axios-error.helper';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UsuariosService {
+     private readonly baseUrl: string;
+
      constructor(
-          @Inject(CACHE_MANAGER) private readonly cacheManager: Cache, // Inyectar el servicio de caché
-     ) { }
+          private readonly configService: ConfigService
+     ) {
+          this.baseUrl = this.configService.get<string>('URL_USUARIOS'); // apunta al microservicio
+     }
 
-     async login(
-          payload: { usuario: string; password: string; empresa_id: number },
-          baseUrl: string,
-     ): Promise<any> {
+     async findAll(empresaId: number, page: number = 1, limit: number = 10, search?: string): Promise<any> {
           try {
-
-               // Si no están en caché, realizar la solicitud
-               const response = await axios.post(
-                    `${baseUrl}/autenticacion/iniciar-sesion`,
-                    payload,
-                    {
-                         headers: {
-                              'Content-Type': 'application/json',
-                         },
+               const offset = (page - 1) * limit;
+               const response = await axios.get(`${this.baseUrl}/usuarios`, {
+                    params: { 
+                         empresa_id: empresaId, 
+                         limit, 
+                         offset,
+                         search, 
                     },
-               );
-               
-               const rolPermisos = response.data.usuario.rol_permisos;
-               const key = String(response.data.usuario.id);
-               await this.cacheManager.set(key, rolPermisos); 
-               
+                    headers: {
+                         'Content-Type': 'application/json',
+                    },
+               });
                return response.data;
           } catch (error) {
                handleAxiosError(error);
           }
      }
+
+     async create(data: any): Promise<any> {
+          try {
+               const response = await axios.post(`${this.baseUrl}/usuarios`, data);
+               return response.data;
+          } catch (error) {
+               handleAxiosError(error);
+          }
+
+     }
+
+     async update(id: number, data: any): Promise<any> {
+          try {
+               const response = await axios.patch(`${this.baseUrl}/usuarios/${id}`, data);
+               return response.data;
+          } catch (error) {
+               handleAxiosError(error);
+          }
+     }
+
+     async delete(id: number, empresa_id: number): Promise<any> {
+          try {
+               const response = await axios.delete(`${this.baseUrl}/usuarios/${id}`, {
+                    data: { empresa_id },
+                    headers: {
+                         'Content-Type': 'application/json',
+                    },
+               });
+               return response.data;
+          } catch (error) {
+               handleAxiosError(error);
+          }
+     }
+
 }

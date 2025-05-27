@@ -30,7 +30,9 @@ export class DominioMiddleware implements NestMiddleware {
     }
 
     //Buscar la empresa por el dominio
-    const empresa = await this.empresaRepo.findOne({ where: { dominio } });
+    const empresa = await this.empresaRepo.findOne({ 
+          where: { dominio },
+    });
     if (!empresa) {
       throw new UnauthorizedException(`El dominio "${host}" no está registrado`);
     } 
@@ -39,7 +41,6 @@ export class DominioMiddleware implements NestMiddleware {
     if (!empresa.estado) {
       throw new UnauthorizedException(`La empresa asociada al dominio "${host}" no está activa`);
     }
-
     req['empresa'] = {
       id: empresa.id,
       dominio: empresa.dominio,

@@ -15,6 +15,9 @@ import { EmpresaModulosModule } from './empresa-modulos/empresa-modulos.module';
 import { RolesModule } from './roles/roles.module';
 import { AutenticacionModule } from './autenticacion/autenticacion.module';
 import { ModulosModule } from './modulos/modulos.module';
+import { PermisosService } from './permisos/permisos.service';
+import { PermisosController } from './permisos/permisos.controller';
+import { PermisosModule } from './permisos/permisos.module';
 
 @Module({
   imports: [
@@ -35,9 +38,10 @@ import { ModulosModule } from './modulos/modulos.module';
     RolesModule,
     AutenticacionModule,
     ModulosModule,
+    PermisosModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, PermisosController],
+  providers: [AppService, PermisosService],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {

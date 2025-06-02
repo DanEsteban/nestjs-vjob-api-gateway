@@ -12,11 +12,14 @@ export class Modulo {
      @Column()
      nombre: string;
 
-     @OneToMany(() => Permiso, permiso => permiso.modulo)
-     permisos: Permiso[];
+     @Column({ unique: true })
+     slug: string;
 
      @Column({ default: false })
      is_admin: boolean;
+
+     @OneToMany(() => Permiso, permiso => permiso.modulo)
+     permisos: Permiso[];
 
      @OneToMany(() => EmpresaModulo, (empresaModulo) => empresaModulo.modulo, { cascade: true })
      empresaModulo: EmpresaModulo[];

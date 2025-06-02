@@ -14,6 +14,7 @@ import { PermisosMiddleware } from './middleware/permisos.middleware';
 import { EmpresaModulosModule } from './empresa-modulos/empresa-modulos.module';
 import { RolesModule } from './roles/roles.module';
 import { AutenticacionModule } from './autenticacion/autenticacion.module';
+import { ModulosModule } from './modulos/modulos.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { AutenticacionModule } from './autenticacion/autenticacion.module';
     EmpresaModulosModule,
     RolesModule,
     AutenticacionModule,
+    ModulosModule,
   ],
   controllers: [AppController],
   providers: [AppService],

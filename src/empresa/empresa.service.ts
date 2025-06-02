@@ -12,7 +12,7 @@ export class EmpresaService {
      private readonly baseUrl: string;
 
      constructor(
-          private readonly configService: ConfigService,          
+          private readonly configService: ConfigService,
      ) {
           this.baseUrl = this.configService.get<string>('URL_USUARIOS');
      }
@@ -37,14 +37,14 @@ export class EmpresaService {
      ): Promise<any> {
 
           const formData = new FormData();
-          
+
           for (const key in data) {
                formData.append(key, data[key]);
           }
-     
-          if (file && fs.existsSync(file.path)) {
-               const fileStream = fs.createReadStream(file.path); // Crear un ReadStream
-               formData.append('logo', fileStream, file.originalname); // Agregar el archivo al FormData
+
+          if (file) {
+               const fileStream = fs.createReadStream(file.path);
+               formData.append('logo', fileStream, file.originalname);
           }
 
           try {

@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { handleAxiosError } from 'src/helpers/axios-error.helper';
 import axios from 'axios';
 import { ConfigService } from '@nestjs/config';
+import e from 'express';
 
 @Injectable()
 export class RolesService {
@@ -12,21 +13,6 @@ export class RolesService {
 
      constructor(private readonly configService: ConfigService) {
           this.baseUrl = this.configService.get<string>('URL_USUARIOS'); // apunta al microservicio
-     }
-
-     async findAll(empresaId: number, page: number = 1, limit: number = 10): Promise<any> {
-          try {
-               const offset = (page - 1) * limit;
-               const response = await axios.get(`${this.baseUrl}/roles`, {
-                    params: { empresa_id: empresaId, offset, limit },
-                    headers: {
-                         'Content-Type': 'application/json',
-                    },
-               });
-               return response.data;
-          } catch (error) {
-               handleAxiosError(error);
-          }
      }
 
      async create(data: any): Promise<any> {
@@ -38,19 +24,19 @@ export class RolesService {
           }
      }
 
-     async update(id: number, data: any): Promise<any> {
+     async asignarPermisos(rolId: number, data: { permiso_ids: number[] }): Promise<any> {
           try {
-               const response = await axios.patch(`${this.baseUrl}/roles/${id}`, data);
+               const response = await axios.put(`${this.baseUrl}/roles/${rolId}/permisos`, data);
                return response.data;
           } catch (error) {
                handleAxiosError(error);
           }
      }
 
-     async desactivar(id: number, empresa_id: number): Promise<any> {
+     async obtenerPermisos(rolId: number, page: number = 1, limit: number = 10): Promise<any> {
           try {
-               const response = await axios.delete(`${this.baseUrl}/roles/${id}`, {
-                    data: { empresa_id },
+               const response = await axios.get(`${this.baseUrl}/roles/${rolId}/permisos`, {
+                    params: { page, limit },
                     headers: {
                          'Content-Type': 'application/json',
                     },
@@ -61,4 +47,17 @@ export class RolesService {
           }
      }
 
+     async listarPorEmpresa(empresaId: number, page: number = 1, limit: number = 10): Promise<any> {
+          try {
+               const response = await axios.get(`${this.baseUrl}/roles/empresa`, {
+                    params: { empresaId, page, limit },
+                    headers: {
+                         'Content-Type': 'application/json',
+                    },
+               });
+               return response.data;
+          } catch (error) {
+               handleAxiosError(error);
+          }
+     }
 }

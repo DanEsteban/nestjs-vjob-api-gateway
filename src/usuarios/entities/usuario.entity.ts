@@ -32,7 +32,7 @@ export class Usuario {
      @JoinColumn({ name: 'empresa_id' })
      empresa: Empresa;
 
-     @ManyToOne(() => Rol, rol => rol.usuarios, { eager: true })
+     @ManyToOne(() => Rol, rol => rol.usuarios)
      @JoinColumn({ name: 'rol_id' })
      rol: Rol;
 

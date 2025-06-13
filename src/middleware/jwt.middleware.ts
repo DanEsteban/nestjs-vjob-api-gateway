@@ -17,15 +17,14 @@ export class JwtMiddleware implements NestMiddleware {
           if (!token) {
                return res.status(401).send('Token no proporcionado');
           }
-
           try {
                const secretKey = this.configService.get<string>('CLAVE_JWT');
                if (!secretKey) {
                     throw new Error('Clave JWT no configurada');
                }
-
                const decoded = jwt.verify(token, secretKey); 
                req.user = decoded;
+
                next(); // Continúa con la siguiente función middleware
           } catch (error) {
                if (error.name === 'TokenExpiredError') {

@@ -7,7 +7,7 @@ import { handleAxiosError } from '../helpers/axios-error.helper';
 export class AutenticacionService {
 
      constructor(
-          @Inject(CACHE_MANAGER) private readonly cacheManager: Cache, // Inyectar el servicio de caché
+          @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
      ) { }
 
      async login(

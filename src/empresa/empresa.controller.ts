@@ -1,44 +1,59 @@
-import { Body, Controller, Delete, Get, Inject, Param, ParseIntPipe, Post, Put, Query, Req, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Inject, Param, ParseIntPipe, Patch, Post, Put, Query, Req, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { EmpresaService } from "./empresa.service";
 import { FileInterceptor } from "@nestjs/platform-express";
 
-@Controller('empresa')
+@Controller('empresas')
 export class EmpresaController {
      constructor(
           private readonly empresaService: EmpresaService,
      ) { }
 
-     @Get()
-     async getEmpresas(
-          @Query('page') page: number = 1,
-          @Query('limit') limit: number = 10,
-     ): Promise<any> {
-          return this.empresaService.findAll(Number(page), Number(limit));
-     }
-
      @Post()
      @UseInterceptors(FileInterceptor('logo'))
-     createEmpresa(
+     async crearEmpresa(
           @Body() data: any,
           @UploadedFile() file: Express.Multer.File,
      ): Promise<any> {
           return this.empresaService.create(data, file);
      }
 
+
+     // Activar empresa (solo superadmin)
+     @Patch(':id/activar')
+     async activarEmpresa(@Param('id') id: number) {
+          const empresa = await this.empresaService.activarEmpresa(id);
+          return empresa;
+     }
+
+     // Desactivar empresa (solo superadmin)
+     @Patch(':id/desactivar')
+     async desactivarEmpresa(@Param('id') id: number) {
+          const empresa = await this.empresaService.desactivarEmpresa(id);
+          return empresa;
+     }
+
+
+     @Get()
+     async listarEmpresas(
+          @Query('page') page: number = 1,
+          @Query('limit') limit: number = 10,
+     ): Promise<any> {
+          return this.empresaService.listarEmpresas(Number(page), Number(limit));
+     }
+
+     @Post('modulos')
+     asignar(@Body() data: any) {
+          return this.empresaService.asignarModulos(data);
+     }
+
      @Put(':id')
      @UseInterceptors(FileInterceptor('logo'))
-     async updateEmpresa(
+     async actualizarEmpresa(
           @Param('id', ParseIntPipe) id: number,
           @Body() body: any,
           @UploadedFile() file: Express.Multer.File,
      ) {
 
-          return this.empresaService.update(id, body, file);
+          return this.empresaService.actualizarEmpresa(id, body, file);
      }
-
-     @Delete(':id')
-     deleteEmpresa(@Param('id', ParseIntPipe) id: number): Promise<any> {
-          return this.empresaService.delete(id);
-     }
-
 }

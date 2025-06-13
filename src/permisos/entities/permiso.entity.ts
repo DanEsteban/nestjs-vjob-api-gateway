@@ -14,7 +14,7 @@ export class Permiso {
      @Column()
      slug: string;
 
-     @ManyToOne(() => Modulo, modulo => modulo.permisos, { eager: true })
+     @ManyToOne(() => Modulo, modulo => modulo.permisos)
      @JoinColumn({ name: 'modulo_id' })
      modulo: Modulo;
 

@@ -13,28 +13,14 @@ export class ModulosService {
           this.baseUrl = this.configService.get<string>('URL_USUARIOS');
      }
 
-     async create(data: any): Promise<any> {
+     async obtenerModulosEmpresa(
+          empresa_id: number,
+          page: number = 1,
+          limit: number = 10,
+     ): Promise<any> {
           try {
-               const response = await axios.post(`${this.baseUrl}/modulos`, data);
-               return response.data;
-          } catch (error) {
-               handleAxiosError(error);
-          }
-     }
-
-     async asignarModulos(data: any): Promise<any> {
-          try {
-               const response = await axios.post(`${this.baseUrl}/modulos/asignar-a-empresa`, data);
-               return response.data;
-          } catch (error) {
-               handleAxiosError(error);
-          }
-     }
-
-     async obtenerModulosPorEmpresa(empresaId: number, page: number = 1, limit: number = 10): Promise<{ data: any[]; total: number }> {     
-          try {
-               const response = await axios.get(`${this.baseUrl}/modulos/empresa/${empresaId}`, {
-               params: { page, limit },
+               const response = await axios.get(`${this.baseUrl}/modulos/empresa`, {
+                    params: { empresa_id, page, limit },
                     headers: {
                          'Content-Type': 'application/json',
                     },
@@ -42,7 +28,23 @@ export class ModulosService {
                return response.data;
           } catch (error) {
                handleAxiosError(error);
-               
+          }
+     }
+
+     async obtenerModulos(
+          page: number = 1,
+          limit: number = 10,
+     ): Promise<any> {
+          try {
+               const response = await axios.get(`${this.baseUrl}/modulos`, {
+                    params: { page, limit },
+                    headers: {
+                         'Content-Type': 'application/json',
+                    },
+               });
+               return response.data;
+          } catch (error) {
+               handleAxiosError(error);
           }
      }
 }

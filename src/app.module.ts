@@ -1,4 +1,4 @@
-import { Module, MiddlewareConsumer } from '@nestjs/common';
+import { Module, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { CacheModule } from '@nestjs/cache-manager';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -18,6 +18,7 @@ import { ModulosModule } from './modulos/modulos.module';
 import { PermisosService } from './permisos/permisos.service';
 import { PermisosController } from './permisos/permisos.controller';
 import { PermisosModule } from './permisos/permisos.module';
+import { SuperAdminMiddleware } from './middleware/super-admin.middleware';
 
 @Module({
   imports: [
@@ -29,7 +30,7 @@ import { PermisosModule } from './permisos/permisos.module';
     }),
     CacheModule.register({
       isGlobal: true,
-      ttl:  24*60*60*1000, // 1 día en segundos
+      ttl: 24 * 60 * 60 * 1000, // 1 día en segundos
     }),
     MiddlewareModule,
     EmpresaModule,
@@ -50,11 +51,19 @@ export class AppModule {
       .forRoutes('*') // Aplica a todas las rutas
       .apply(JwtMiddleware) // Aplica el JwtMiddleware
       .exclude('/autenticacion/iniciar-sesion') // Excluye la ruta de login
-      .forRoutes('*') 
-      // .apply(PermisosMiddleware)
-      // .exclude('/autenticacion/iniciar-sesion')
-      // .forRoutes('*'); 
-  } 
+      .forRoutes('*')
+      .apply(SuperAdminMiddleware)
+      .forRoutes(
+        { path: 'empresas', method: RequestMethod.ALL },
+        { path: 'empresas/modulos', method: RequestMethod.ALL },
+        { path: 'empresas/:id', method: RequestMethod.ALL },
+        { path: 'empresas/:id/activar', method: RequestMethod.ALL },
+        { path: 'empresas/:id/desactivar', method: RequestMethod.ALL },
+      )
+    // .apply(PermisosMiddleware)
+    // .exclude('/autenticacion/iniciar-sesion')
+    // .forRoutes('*'); 
+  }
 }
 
 

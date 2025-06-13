@@ -25,7 +25,7 @@ export class Rol {
      @Column({ default: false })
      eliminado: boolean;
 
-     @ManyToOne(() => Empresa, empresa => empresa.roles, { eager: true })
+     @ManyToOne(() => Empresa, empresa => empresa.roles)
      @JoinColumn({ name: 'empresa_id' })
      empresa: Empresa;
 
